@@ -1,9 +1,0 @@
-name: ghibliAPI
-channels:
-  - conda-forge
-dependencies:
-  - python
-  - requests
-  - pip
-  - pip:
-    - pymongo
