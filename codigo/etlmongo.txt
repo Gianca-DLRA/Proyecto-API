@@ -7,6 +7,8 @@ Funciones que se han hecho para el stage 'T' del ETL desde Mongo de la db:
     db.movies.updateOne({title:'Whisper of the Heart'}, {$set:{hepburn:'Mimi o Sumaseba'}})
 - Cambiar el tipo de dato de budgetUSD y de boxOfficeUSD de string a int:
     1. En lugar de 'Unkown', 'N/A' y 'TBA', ponerles '0' para poder convertir: db.movies.updateMany({budgetUSD:{$eq:'Unknown'}}, {$set:{budgetUSD:'0'}})
+    db.movies.updateMany({budgetUSD:{$eq:'TBA'}}, {$set:{budgetUSD:'0'}})
+    db.movies.updateMany({budgetUSD:{$eq:'N/A'}}, {$set:{budgetUSD:'0'}})
     2. Quitarle las comas: db.movies.updateMany({}, [{$addFields:{budgetUSD:{$replaceAll:{input:'$budgetUSD', find:',', replacement:''}}}}])
     3. Convertir a double: db.movies.updateMany( {}, [{ $set: { budgetUSD: { $toDouble: '$budgetUSD' } } }])
     4. Imputar con criterio de media aquellos valores que tienen 0: 
@@ -17,5 +19,5 @@ Funciones que se han hecho para el stage 'T' del ETL desde Mongo de la db:
     1. Imputamos por 0 las que tienen 'TBA': db.movies.updateMany({runtimeMinutes:{$eq:'TBA'}}, {$set:{runtimeMinutes:'0'}})
     2. Convertimos: db.movies.updateMany( {}, [{ $set: { runtimeMinutes: { $toInt: '$runtimeMinutes' } } }])
 - Imputar los atributos anidados de character vacios:
-    db.movies.updateMany({character: { $all: [{ "$elemMatch" : { name: "", originalCast: "", lastEnglishDubbingActor: "" } }] }}, { $set: { "character.$[].name": 'TBA', "character.$[].originalCast": 'TBA', "character.$[].lastEnglishDubbingActor": 'TBA'  } })
+    db.movies.updateMany({character: { $all: [{ "$elemMatch" : { name: "", originalCast: "", lastEnglishDubbingActor: "" } }] }}, { $set: { "character.$[].name": 'TBD', "character.$[].originalCast": 'TBD', "character.$[].lastEnglishDubbingActor": 'TBD'  } })
     
