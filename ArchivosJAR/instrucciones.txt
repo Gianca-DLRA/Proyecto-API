@@ -1,0 +1,10 @@
+Instrucciones para el manejo de los plugins
+1. Asegurarte de haber levantado el docker compose
+2. Una vez que el docker este levantado, en la carpeta Docker va a haber dos nuevas carpetas, una llamada plugins y otra data
+3. Dentro de la terminal, muevase a la carpeta en la que se encuenran estas instrucciones
+4. Ejecutar el siguiente comando para mover los archivos .jar a la carpeta plugins nueva:
+    - sudo mv bson-3.4.2.jar Docker/plugins
+    - sudo mv mongodb-driver-3.12.13.jar Docker/plugins
+    - sudo mv mongodb-driver-core-4.10.0-alpha0.jar Docker/plugins
+    - sudo mv mongo-java-driver-3.12.13.jar Docker/plugins
+5. Fin
