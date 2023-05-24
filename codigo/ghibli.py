@@ -13,7 +13,7 @@ movies=db.movies
 
 #Obtenemos las peliculas de un .txt y las guardamos en una lista
 movies_list=[]
-with open("movies.txt", "r") as f:
+with open("Proyecto-API/codigo/movies.txt", "r") as f:
     for movie in f:
         movies_list.append(movie.strip("\n"))
 
@@ -30,12 +30,12 @@ for movie in movies_list:
         print("Pelicula no encontrada\n")
 
 #Agregamos las dos peliculas que faltan porque el JSON desde la API no se convertian bien
-with open("hdyl.json", "r") as f:
+with open("Proyecto-API/codigo/hdyl.json", "r") as f:
     hdyl=json.load(f)
     movies.insert_one(hdyl)
 print("How Do You Live?")
 
-with open("kaguya.json", "r") as f:
+with open("Proyecto-API/codigo/kaguya.json", "r") as f:
     kaguya=json.load(f)
     movies.insert_one(kaguya)
 print("The Tale of the Princess Kaguya")

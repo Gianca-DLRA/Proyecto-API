@@ -32,12 +32,12 @@ class Neo4jConnection:
         return response
 
 #Creamos la conexion con neo4j (Cambiar passwords etc)
-conn = Neo4jConnection(uri="bolt://localhost:7687", user="neo4j", pwd="7734")
+conn = Neo4jConnection(uri="bolt://localhost:7687", user="neo4j", pwd="1234")
 
 
 #Se crea el texto de la query para convertir los documentos JSON en grafos 
 ### INCLUIR CORREGIR HOST
-docAGraf = "CALL apoc.mongodb.get('mongodb://mongo:neo4j@mongo:27017', 'ghibli', 'movies', {}, true) YIELD value CALL apoc.graph.fromDocument(value, {write: true, mappings: {`$`: 'Ghibli{*, @reviews}',`$.character`: 'Character{!name,originalCast,lastEnglishDubbingActor}'}}) YIELD graph AS g1 return g1"
+docAGraf = "CALL apoc.mongo.find('mongodb://mong:27017/ghibli.movies', {}) YIELD value CALL apoc.graph.fromDocument(value, {write: true, idField: 'title' ,mappings: {`$`: 'Ghibli{*, @reviews, @_id}',`$.character`: 'Character{!name,originalCast,lastEnglishDubbingActor}'}}) YIELD graph AS g1 return g1"
 
 #Se realiza la carga
 conn.query(docAGraf)
