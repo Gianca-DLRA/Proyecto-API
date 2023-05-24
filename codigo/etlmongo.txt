@@ -21,5 +21,5 @@ Funciones que se han hecho para el stage 'T' del ETL desde Mongo de la db:
     1. Imputamos por 0 las que tienen 'TBA': db.movies.updateMany({runtimeMinutes:{$eq:'TBA'}}, {$set:{runtimeMinutes:'0'}})
     2. Convertimos: db.movies.updateMany( {}, [{ $set: { runtimeMinutes: { $toInt: '$runtimeMinutes' } } }])
 - Imputar los atributos anidados de character vacios:
-
+    db.movies.updateMany({character: { $all: [{ "$elemMatch" : { name: "", originalCast: "", lastEnglishDubbingActor: "" } }] }}, { $set: { "character.$[].name": 'TBD', "character.$[].originalCast": 'TBD', "character.$[].lastEnglishDubbingActor": 'TBD'  } })
     
