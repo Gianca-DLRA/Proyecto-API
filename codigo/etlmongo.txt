@@ -10,16 +10,12 @@ Funciones que se han hecho para el stage 'T' del ETL desde Mongo de la db:
     2. Quitarle las comas: db.movies.updateMany({}, [{$addFields:{budgetUSD:{$replaceAll:{input:'$budgetUSD', find:',', replacement:''}}}}])
     3. Convertir a double: db.movies.updateMany( {}, [{ $set: { budgetUSD: { $toDouble: '$budgetUSD' } } }])
     4. Imputar con criterio de media aquellos valores que tienen 0: 
-        a) Obtener la media:  var budgetMean = db.movies.aggregate([
-...         {
-...             $group: {
-...                 _id: null,
-...                  averageBudget: { $avg: "$budgetUSD" }}}]).toArray();
+        a) Obtener la media:  var budgetMean = db.movies.aggregate([{$match: {budgetUSD: {$ne: 0}} },{$group: {_id: null, averageBudget: { $avg: "$budgetUSD" }}}]).toArray();
         b)Imputacion: db.movies.updateMany({budgetUSD:0}, {$set:{budgetUSD:budgetMean[0].averageBudget}})
     5. Repetir para boxOfficeUSD pero solo existen 'Unkown" y 'TBD'
 - Cambiar el tipo de dato de runtimeMinutes: 
     1. Imputamos por 0 las que tienen 'TBA': db.movies.updateMany({runtimeMinutes:{$eq:'TBA'}}, {$set:{runtimeMinutes:'0'}})
     2. Convertimos: db.movies.updateMany( {}, [{ $set: { runtimeMinutes: { $toInt: '$runtimeMinutes' } } }])
 - Imputar los atributos anidados de character vacios:
-    db.movies.updateMany({character: { $all: [{ "$elemMatch" : { name: "", originalCast: "", lastEnglishDubbingActor: "" } }] }}, { $set: { "character.$[].name": 'TBD', "character.$[].originalCast": 'TBD', "character.$[].lastEnglishDubbingActor": 'TBD'  } })
+    db.movies.updateMany({character: { $all: [{ "$elemMatch" : { name: "", originalCast: "", lastEnglishDubbingActor: "" } }] }}, { $set: { "character.$[].name": 'TBA', "character.$[].originalCast": 'TBA', "character.$[].lastEnglishDubbingActor": 'TBA'  } })
     
