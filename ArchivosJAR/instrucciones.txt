@@ -7,4 +7,4 @@ Instrucciones para el manejo de los plugins
     - sudo mv mongodb-driver-3.12.13.jar Docker/plugins
     - sudo mv mongodb-driver-core-4.10.0-alpha0.jar Docker/plugins
     - sudo mv mongo-java-driver-3.12.13.jar Docker/plugins
-5. Fin
+5. Reinicia el contenedor de neo4j
