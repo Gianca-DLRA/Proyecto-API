@@ -1,0 +1,25 @@
+Funciones que se han hecho para el stage 'T' del ETL desde Mongo de la db:
+- Quitar el campo anidado "still" pues solo habia un documento que lo tenia lleno:
+    db.movies.updateMany({}, { $unset: { "character.$[].still": 1 } })
+- Cambiar el arreglo vacio en el campo "awards" de aquellas peliculas que no tienen premios:
+    db.movies.updateMany({ awards: [''] }, { $set: { awards: 'None' } })
+- Modificar el titulo original (hepburn) que estaba mal escrito en la API:
+    db.movies.updateOne({title:'Whisper of the Heart'}, {$set:{hepburn:'Mimi o Sumaseba'}})
+- Cambiar el tipo de dato de budgetUSD y de boxOfficeUSD de string a int:
+    1. En lugar de 'Unkown', 'N/A' y 'TBA', ponerles '0' para poder convertir: db.movies.updateMany({budgetUSD:{$eq:'Unknown'}}, {$set:{budgetUSD:'0'}})
+    2. Quitarle las comas: db.movies.updateMany({}, [{$addFields:{budgetUSD:{$replaceAll:{input:'$budgetUSD', find:',', replacement:''}}}}])
+    3. Convertir a double: db.movies.updateMany( {}, [{ $set: { budgetUSD: { $toDouble: '$budgetUSD' } } }])
+    4. Imputar con criterio de media aquellos valores que tienen 0: 
+        a) Obtener la media:  var budgetMean = db.movies.aggregate([
+...         {
+...             $group: {
+...                 _id: null,
+...                  averageBudget: { $avg: "$budgetUSD" }}}]).toArray();
+        b)Imputacion: db.movies.updateMany({budgetUSD:0}, {$set:{budgetUSD:budgetMean[0].averageBudget}})
+    5. Repetir para boxOfficeUSD pero solo existen 'Unkown" y 'TBD'
+- Cambiar el tipo de dato de runtimeMinutes: 
+    1. Imputamos por 0 las que tienen 'TBA': db.movies.updateMany({runtimeMinutes:{$eq:'TBA'}}, {$set:{runtimeMinutes:'0'}})
+    2. Convertimos: db.movies.updateMany( {}, [{ $set: { runtimeMinutes: { $toInt: '$runtimeMinutes' } } }])
+- Imputar los atributos anidados de character vacios:
+
+    
