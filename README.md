@@ -36,7 +36,26 @@ c) Corre los siguientes comandos:
 ```
  d) Reinicia el docker
  Estos pasos dejan lista la conexion de *neo4j* y *mongo*.
-4. Correr el script *ghibli.py*. Si es en terminal, asegurate de tener activado el environment:
+4. Cambiar los paths que se encuentran en *ghibl.py* por paths absolutos de la ubicacion de *movies.txt*, *hdyl.json* y *kaguya.json*: 
+```py
+with open("/home/giancarlo_dlra/Proyecto-API/codigo/movies.txt", "r") as f:
+    for movie in f:
+        movies_list.append(movie.strip("\n"))
+
+```
+y
+```py
+with open("/home/giancarlo_dlra/Proyecto-API/codigo/hdyl.json", "r") as f:
+    hdyl=json.load(f)
+    movies.insert_one(hdyl)
+print("How Do You Live?")
+
+with open("/home/giancarlo_dlra/Proyecto-API/codigo/kaguya.json", "r") as f:
+    kaguya=json.load(f)
+    movies.insert_one(kaguya)
+print("The Tale of the Princess Kaguya")
+```
+6. Correr el script *ghibli.py*. Si es en terminal, asegurate de tener activado el environment:
 ```sh
 python3 ghibli.py
 ```
