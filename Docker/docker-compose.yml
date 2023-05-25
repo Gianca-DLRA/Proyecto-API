@@ -1,7 +1,7 @@
 version: '3.7'
 services:
     neo4j:
-      image: neo4j:4.4
+      image: neo4j:5.6
       restart: unless-stopped
       build: 
         context: ./neo4j/
@@ -13,14 +13,13 @@ services:
         - ./data:/data
         - ./plugins:/plugins
       environment: 
-        # Raise memory limits 
-        - NEO4J_dbms_memory_pagecache_size=1G
-        - NEO4J_dbms.memory.heap.initial_size=1G
-        - NEO4J_dbms_memory_heap_max__size=1G
-        - NEO4JLABS_PLUGINS=["apoc"]
+        - NEO4J_server_memory_pagecache_size=1G
+        - NEO4J_server_memory_heap_max__size=1G
+        - NEO4J_PLUGINS=["apoc"]
+        - NEO4J_AUTH=neo4j/12345678
     
     mongodb:
-      image: mongo:latest
+      image: mongo:5.0
       container_name: mong
       ports:
         - '27017:27017'
