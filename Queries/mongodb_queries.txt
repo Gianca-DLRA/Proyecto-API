@@ -1,0 +1,24 @@
+Pelicula mas premiada
+
+db.movies.aggregate([
+    {$project:{_id:0, title:1,CantidaddePremios: {$size: "$awards"}}},
+    {$sort: {CantidaddePremios: -1}},
+    {$limit : 1}
+])
+
+
+Cantidad de peliculas por genero
+
+db.movies.aggregate([
+    {$group:{_id: "$genre", Conteo:{$count: {}}}},
+    {$project : { _id : 0,"Género": "$_id"  ,Conteo : 1}},
+    {$sort: {Conteo: -1}}
+])
+
+Peliculas que ganaron el Oscar y el Tokyo Anime Award:
+
+db.movies.aggregate([ 
+    {$unwind:'$awards'}, 
+    {$project:{_id:0, title:1, awards:1}}, 
+    {$match:{$or:[{'awards':{$regex:/Academy Awards/}},
+    {'awards':{$regex:/Tokyo Anime Award/}}]}}])

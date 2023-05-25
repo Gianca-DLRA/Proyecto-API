@@ -1,0 +1,17 @@
+Numero de personajes por pelicula
+
+MATCH (m:Ghibli)-[:CHARACTER]->(c:Character)
+RETURN m.title as Movie, count(c.name) as Conteo_Personajes
+ORDER BY Movie
+
+Que nombre de personaje aparece en que tantas peliculas:
+
+MATCH (m:Ghibli)-[:CHARACTER]->(c:Character)
+RETURN c.name as Name, count(distinct m.title) as Conteo_pelis
+ORDER BY Conteo_pelis
+
+Cuantas peliculas ha dirigido Hayao Miyazaki:
+
+MATCH (m:Ghibli)
+WHERE m.director='Hayao Miyazaki'
+RETURN count(m.title) as Number
